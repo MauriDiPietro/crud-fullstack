@@ -1,11 +1,11 @@
 import db from '../database/db';
 import { DataTypes } from 'sequelize/types';
 
-const BlogModel = db.define('blogs', {
+const BlogModel = db.define('series', {
     title: {
         type: DataTypes.STRING
     },
-    content: {
+    genre: {
         type: DataTypes.STRING
     }
 });
