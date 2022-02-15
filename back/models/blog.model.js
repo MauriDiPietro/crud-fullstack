@@ -1,11 +1,13 @@
-import db from '../database/db';
-import { DataTypes } from 'sequelize/types';
+import db from '../database/db.js';
+import { DataTypes } from 'sequelize';
+import dotenv from 'dotenv';
+dotenv.config();
 
-const BlogModel = db.define('series', {
+const BlogModel = db.define(process.env.DB_TABLE, {
     title: {
         type: DataTypes.STRING
     },
-    genre: {
+    content: {
         type: DataTypes.STRING
     }
 });

@@ -1,11 +1,11 @@
-import BlogModel from '../models/blog.model';
+import BlogModel from '../models/blog.model.js';
 
 export const getAllBlogs = async (req, res)=>{
     try{
         const blogs = await BlogModel.findAll();
         res.json(blogs)
     }catch(err){
-        res.json({message: error.message});
+        res.json({message: err.message});
     }
 };
 
@@ -16,9 +16,9 @@ export const getBlog = async (req, res)=>{
                 id: req.params.id
             }
         });
-        res.json(blog)
+        res.json(blog[0])
     }catch(err){
-        res.json({message: error.message});
+        res.json({message: err.message});
     }
 };
 
@@ -29,7 +29,7 @@ export const createBlog = async (req, res)=>{
             'message': `Registro creado correctamente, title= ${req.body.title}, content= ${req.body.content}`
         })
     }catch(err){
-        res.json({message: error.message});
+        res.json({message: err.message});
     }
 }
 
@@ -41,10 +41,10 @@ export const updateBlog = async (req, res)=>{
             }
         });
         res.json({
-            'message': `Registro id=${id} actualizado correctamente`
+            'message': `Registro actualizado correctamente`
         })
     }catch(err){
-        res.json({message: error.message});
+        res.json({message: err.message});
     }
 };
 
@@ -56,9 +56,9 @@ export const deleteBlog = async (req, res)=>{
             }
         })
         res.json({
-            'message': `Registro id= ${id} eliminado`
+            'message': `Registro eliminado`
         })
     }catch(err){
-        res.json({message: error.message});
+        res.json({message: err.message});
     }
 };
