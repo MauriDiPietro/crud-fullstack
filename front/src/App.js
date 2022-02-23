@@ -4,6 +4,9 @@ import CompShowBlogs from './components/ShowBlogs.js';
 import {BrowserRouter, Route, Routes} from 'react-router-dom';
 import CompCreateBlog from './components/CreateBlog';
 import CompEditBlog from './components/EditBlog';
+import CompCreateUser from './components/CreateUser'
+import CompLoginUser from './components/LoginUser';
+import CompHome from './components/Home';
 
 function App() {
   return (
@@ -17,6 +20,9 @@ function App() {
                 <Route path='/' element={<CompShowBlogs />} />
                 <Route path='/create' element={<CompCreateBlog />} />
                 <Route path='/edit/:id' element={<CompEditBlog />} />
+                <Route path='/signup' element={< CompCreateUser/>} />
+                <Route path='/login' element={< CompLoginUser />}  />
+                <Route path='/home' element={< CompHome/>} />
             </Routes>
         </BrowserRouter>
         
