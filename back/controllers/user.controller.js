@@ -25,7 +25,17 @@ export const createUser = async (req, res)=>{
 export const getUserById = async(req, res)=>{
   const { id } = req.params;
     try{
-      const user = await UserModel.findByPk(id)
+      const user = await UserModel.findOne({
+        where: {
+          id
+        },
+        include: [{
+          model: BlogModel,
+          as: 'posts',
+          attributes: ['title', 'content']
+        }],
+        attributes: ['id', 'username']
+      })
       // ({
       //   where: {
       //     username: req.body.username
