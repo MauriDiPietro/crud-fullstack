@@ -10,7 +10,8 @@ import configPassport from './auth/passport.js';
 import session from 'express-session';
 import dotenv from 'dotenv';
 dotenv.config();
-
+import './database/asociations.js'
+// import cookieParser from 'cookie-parser';
 
 // const corsOptions = {
 //     origin: 'http://localhost:8081'
@@ -35,19 +36,14 @@ db.sync({force:false})
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 app.use(morgan('dev'));
-// app.use((req, res, next)=>{
-//     res.header(
-//         "Access-Control-Allow-Headers",
-//         "x-access-token, Origin, Content-Type, Accept"
-//     );
-//     next()
-// });
+
 /*SESSION*/
 app.use(session({
     secret: process.env.SECRET,
     resave: true,
     saveUninitialized: true
 }));
+// app.use(cookieParser())
 // app.use(passport.initialize());
 // app.use(passport.session());
 

@@ -1,7 +1,8 @@
 import express from 'express';
-import { createUser, getUserById, loginUser } from '../controllers/user.controller.js';
+import { createUser, getUserById, loginUser, getUsers } from '../controllers/user.controller.js';
 const router = express.Router();
 import {verifyToken} from '../middlewares/verifyToken.js';
+import {refreshToken} from '../controllers/user.controller.js'
 
 
 
@@ -9,10 +10,12 @@ router.post('/signup', createUser);
 
 router.post('/login', loginUser);
 
+router.get('/home/:id', verifyToken, getUserById);
 
-router.get('/login', getUserById);
+router.get('/token', refreshToken);
 
-router.get('/home/:id', verifyToken, getUserById)
+router.get('/', getUsers);
+
 
 export default router;
 

@@ -2,6 +2,7 @@ import UserModel from "../models/user.model.js";
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import dotenv from 'dotenv';
+import BlogModel from "../models/blog.model.js";
 dotenv.config();
 
 export const createUser = async (req, res)=>{
@@ -40,6 +41,26 @@ export const getUserById = async(req, res)=>{
     }
 }
 
+export const getUsers = async(req, res)=>{
+
+    try{
+      const user = await UserModel.findAll({
+        include: [{
+          model: BlogModel,
+          as: 'posts',
+          attributes: ['title']
+        }],
+        attributes: ['id', 'username']
+      })
+      if(!user){
+        res.send('database is empty!')
+      }
+      res.json(user)
+    }catch(err){
+        res.json({message: err.message});
+    }
+}
+
 export const loginUser = async (req, res)=>{
   try{
     const user = await UserModel.findAll({
@@ -59,4 +80,33 @@ export const loginUser = async (req, res)=>{
   }catch(err){
     res.status(404).json({message: err.message});
   }
-}
+};
+
+export const refreshToken = async(req, res)=>{
+  console.log('console.log--->', req.session.refreshToken)
+  try {
+    const refreshToken = req.session.refreshToken;
+    if(!refreshToken) return res.sendStatus(401);
+    const user = await UserModel.findAll({
+      where: {
+        refresh_token: refreshToken
+      }
+    });
+    if(!user[0]) return res.sendStatus(401);
+    jwt.verify(refreshToken, process.env.REFRESH_TOKEN, (err, decoded)=>{
+      if(err) return res.sendStatus(403);
+      const userId = user[0].id;
+      const username = user[0].username;
+      const accessToken = jwt.sign({userId, username}, process.env.ACCESS_TOKEN, {
+        expiresIn: '1d'
+      });
+      res.json({ accessToken });
+    })
+  } catch (err) {
+    res.status(404).json({message: err.message});
+  }
+};
+
+export const logout = async (req, res)=>{
+  const token = req.cookies.token
+};
