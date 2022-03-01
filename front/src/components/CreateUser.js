@@ -8,13 +8,22 @@ const CompCreateUser = () => {
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [confPassword, setPassword2] = useState('');
+    const [msg, setMsg] = useState('');
+
     const navigate = useNavigate();
 
     const signup = async (e) => {
         e.preventDefault();
-        await axios
-                    .post(URI, {username, password});
-        navigate('/login');
+        try {
+            await axios
+                        .post(URI, {username, password, confPassword});
+            navigate("/login");
+        } catch (error) {
+            if (error.response) {
+                setMsg(error.response.data.msg)
+            }
+        }
     }
 
     return (
@@ -22,6 +31,7 @@ const CompCreateUser = () => {
         <div>
                 <h3>SIGNUP</h3>
                 <form onSubmit={signup}>
+                    <p>{msg}</p>
                     <div className='mb-3'>
                         <label className='form-label'>Username</label>
                         <input 
@@ -34,6 +44,13 @@ const CompCreateUser = () => {
                         <input 
                             value={password}
                             onChange={(e)=>setPassword(e.target.value)}
+                            type= 'password'
+                            className='form-control'
+                        />
+                          <label className='form-label'>Confirm Password</label>
+                        <input 
+                            value={confPassword}
+                            onChange={(e)=>setPassword2(e.target.value)}
                             type= 'password'
                             className='form-control'
                         />

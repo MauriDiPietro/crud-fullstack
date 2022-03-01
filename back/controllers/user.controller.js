@@ -36,12 +36,6 @@ export const getUserById = async(req, res)=>{
         }],
         attributes: ['id', 'username']
       })
-      // ({
-      //   where: {
-      //     username: req.body.username
-      //   },
-      //   attributes: ['id', 'username']
-      // })
       if(!user){
         res.send('user not exists in database!')
       }
@@ -118,5 +112,20 @@ export const refreshToken = async(req, res)=>{
 };
 
 export const logout = async (req, res)=>{
-  const token = req.cookies.token
+  const refreshToken = req.cookies.refreshToken
+  if(!refreshToken) return res.sendStatus(204);
+  const user = await UserModel.findAll({
+    where: {
+      refresh_token: refreshToken
+    }
+  });
+  if(!user[0]) return res.sendStatus(204);
+  const userId = user[0].id
+  await UserModel.update({refresh_token: null}, {
+    where: {
+      id: userId
+    }
+  });
+  res.clearCookie('refreshToken');
+  return res.sendStatus(200);
 };

@@ -32,7 +32,7 @@ db.sync({force:false})
 });
 
 /*MIDDLEWARES*/
-// app.use(cors(corsOptions));
+app.use(cors({ credentials: true, origin: process.env.REACT_APP }));
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 app.use(morgan('dev'));

@@ -1,5 +1,5 @@
 import express from 'express';
-import { createUser, getUserById, loginUser, getUsers } from '../controllers/user.controller.js';
+import { createUser, getUserById, loginUser, getUsers, logout } from '../controllers/user.controller.js';
 const router = express.Router();
 import {verifyToken} from '../middlewares/verifyToken.js';
 import {refreshToken} from '../controllers/user.controller.js'
@@ -15,6 +15,8 @@ router.get('/home/:id', verifyToken, getUserById);
 router.get('/token', refreshToken);
 
 router.get('/', getUsers);
+
+router.delete('/logout', logout);
 
 
 export default router;
