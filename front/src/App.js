@@ -17,12 +17,12 @@ function App() {
 
         <BrowserRouter>
             <Routes>
-                <Route path='/' element={<CompShowBlogs />} />
+                <Route exact path='/' element={< CompLoginUser />}  />
+                <Route path='/signup' element={< CompCreateUser/>} />
+                <Route path='/blogs' element={<CompShowBlogs />} />
                 <Route path='/create' element={<CompCreateBlog />} />
                 <Route path='/edit/:id' element={<CompEditBlog />} />
-                <Route path='/signup' element={< CompCreateUser/>} />
-                <Route path='/login' element={< CompLoginUser />}  />
-                <Route path='/home' element={< CompHome/>} />
+                <Route path='/home/:id' element={< CompHome/>} />
             </Routes>
         </BrowserRouter>
         

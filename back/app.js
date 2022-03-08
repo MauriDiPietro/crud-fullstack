@@ -11,7 +11,7 @@ import session from 'express-session';
 import dotenv from 'dotenv';
 dotenv.config();
 import './database/asociations.js'
-// import cookieParser from 'cookie-parser';
+import cookieParser from 'cookie-parser';
 
 // const corsOptions = {
 //     origin: 'http://localhost:8081'
@@ -38,12 +38,12 @@ app.use(express.urlencoded({extended:true}));
 app.use(morgan('dev'));
 
 /*SESSION*/
-app.use(session({
-    secret: process.env.SECRET,
-    resave: true,
-    saveUninitialized: true
-}));
-// app.use(cookieParser())
+// app.use(session({
+//     secret: process.env.SECRET,
+//     resave: true,
+//     saveUninitialized: true
+// }));
+app.use(cookieParser())
 // app.use(passport.initialize());
 // app.use(passport.session());
 

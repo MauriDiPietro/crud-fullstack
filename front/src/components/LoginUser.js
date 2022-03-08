@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
+import jwt_decode from 'jwt-decode';
 
 const URI = 'http://localhost:8081/users/login'
 
@@ -8,20 +9,35 @@ const CompLoginUser = () => {
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [msg, setMsg] = useState('');
     const navigate = useNavigate();
 
-    const login = async (e) => {
-        e.preventDefault();
-        await axios
-                    .post(URI, {username, password});
-        navigate('/home');
-    }
+        const login = async (e) => {
+            try {
+                e.preventDefault();
+                const data = await axios
+                                        .post(URI, {username, password});
+                console.log(data)
+                if(data.data.accessToken){
+                    localStorage.setItem('token', data.data.accessToken)
+                    alert('Login OK!')
+                    navigate(`/home/${data.data.userId}`);
+                } else {
+                    alert('Please check your username and password')
+                }
+        } catch (error) {
+            if (error.response) {
+                setMsg(error.response.data.msg)
+            }
+        }
+        }
 
     return (
 
         <div>
                 <h3>LOGIN</h3>
                 <form onSubmit={login}>
+                     <p>{msg}</p>
                     <div className='mb-3'>
                         <label className='form-label'>Username</label>
                         <input 
@@ -39,6 +55,9 @@ const CompLoginUser = () => {
                         />
                     </div>
                     <button type='submit' className='btn btn-primary'>Login!</button>
+                    <Link to='/signup'>  
+                        <button className='btn btn-primary'>Register</button> 
+                    </Link>
                 </form>
         </div>
 

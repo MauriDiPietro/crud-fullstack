@@ -18,7 +18,7 @@ const CompCreateUser = () => {
         try {
             await axios
                         .post(URI, {username, password, confPassword});
-            navigate("/login");
+            navigate("/");
         } catch (error) {
             if (error.response) {
                 setMsg(error.response.data.msg)

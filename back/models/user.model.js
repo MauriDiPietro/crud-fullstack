@@ -12,6 +12,9 @@ const UserModel = db.define(process.env.DB_TABLE_USERS, {
     password: {
         type: DataTypes.STRING,
         allowNull: false
+    },
+    refresh_token:{
+        type: DataTypes.TEXT
     }
 });
 

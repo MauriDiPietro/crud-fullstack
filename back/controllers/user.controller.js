@@ -65,6 +65,50 @@ export const getUsers = async(req, res)=>{
     }
 }
 
+export const getUser = async(req, res)=>{
+  // const token = req.headers['x-access-token']
+  try {
+    // const decoded = jwt.verify(token, process.env.SECRET)
+    // const username = decoded.username
+    const user = await UserModel.findOne({
+            // where: {
+            //   authorization
+            // },
+            include: [{
+              model: BlogModel,
+              as: 'posts',
+              attributes: ['title', 'content']
+            }],
+            attributes: ['id', 'username']
+          })
+          return {status: 200, user: username}
+  } catch (error) {
+    console.log(error)
+    res.json({status: 'error', error: 'invalid token'});
+  }
+//   // const {authorization} = req.headers
+// console.log('LOG--->', req.headers.authorization)
+//   try{
+//     const user = await UserModel.findOne({
+//       // where: {
+//       //   authorization
+//       // },
+//       include: [{
+//         model: BlogModel,
+//         as: 'posts',
+//         attributes: ['title', 'content']
+//       }],
+//       attributes: ['id', 'username']
+//     })
+//     if(!user){
+//       res.send('database is empty!')
+//     }
+//     res.json(user)
+//   }catch(err){
+//       res.json({message: err.message});
+//   }
+}
+
 export const loginUser = async (req, res)=>{
   try{
     const user = await UserModel.findAll({
@@ -79,29 +123,48 @@ export const loginUser = async (req, res)=>{
     const accessToken = jwt.sign({userId, username}, process.env.ACCESS_TOKEN, {
       expiresIn: '1d'
     });
-    res.json({ accessToken })
-    console.log(req.user)
+    const refreshToken = jwt.sign({userId, username}, process.env.ACCESS_TOKEN, {
+      expiresIn: '1d'
+    }); 
+    await UserModel.update({refresh_token: refreshToken}, {
+      where: {
+        id: userId
+      }
+    })
+    res.cookie('refreshToken', refreshToken, {
+      httpOnly: true,
+      maxAge: 24 * 60 * 60 * 1000
+    })
+    res.json({ accessToken, userId })
+    console.log(accessToken)
   }catch(err){
     res.status(404).json({message: err.message});
   }
 };
 
 export const refreshToken = async(req, res)=>{
-  console.log('console.log--->', req.session.refreshToken)
+  console.log('console.log--->', req.cookies.refreshToken)
   try {
-    const refreshToken = req.session.refreshToken;
+    const refreshToken = req.cookies.refreshToken;
     if(!refreshToken) return res.sendStatus(401);
     const user = await UserModel.findAll({
       where: {
         refresh_token: refreshToken
       }
     });
+    const posts = await BlogModel.findAll({
+      where: {
+        id: user[0].id
+      },
+      attributes: ['title', 'content']
+    })
     if(!user[0]) return res.sendStatus(401);
-    jwt.verify(refreshToken, process.env.REFRESH_TOKEN, (err, decoded)=>{
-      if(err) return res.sendStatus(403);
+    jwt.verify(refreshToken, process.env.ACCESS_TOKEN, (err, decoded)=>{
+      if(err) return res.json(err);
       const userId = user[0].id;
       const username = user[0].username;
-      const accessToken = jwt.sign({userId, username}, process.env.ACCESS_TOKEN, {
+      const postsUser = posts
+      const accessToken = jwt.sign({userId, username, postsUser}, process.env.ACCESS_TOKEN, {
         expiresIn: '1d'
       });
       res.json({ accessToken });
