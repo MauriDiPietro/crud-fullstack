@@ -2,7 +2,7 @@ import UserModel from "../models/user.model.js";
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import dotenv from 'dotenv';
-import BlogModel from "../models/blog.model.js";
+import TaskModel from "../models/task.model.js";
 dotenv.config();
 
 export const createUser = async (req, res)=>{
@@ -30,8 +30,8 @@ export const getUserById = async(req, res)=>{
           id
         },
         include: [{
-          model: BlogModel,
-          as: 'posts',
+          model: TaskModel,
+          as: 'tasks',
           attributes: ['title', 'content']
         }],
         attributes: ['id', 'username']
@@ -50,8 +50,8 @@ export const getUsers = async(req, res)=>{
     try{
       const user = await UserModel.findAll({
         include: [{
-          model: BlogModel,
-          as: 'posts',
+          model: TaskModel,
+          as: 'tasks',
           attributes: ['title']
         }],
         attributes: ['id', 'username']
@@ -75,8 +75,8 @@ export const getUser = async(req, res)=>{
             //   authorization
             // },
             include: [{
-              model: BlogModel,
-              as: 'posts',
+              model: TaskModel,
+              as: 'tasks',
               attributes: ['title', 'content']
             }],
             attributes: ['id', 'username']
@@ -152,7 +152,7 @@ export const refreshToken = async(req, res)=>{
         refresh_token: refreshToken
       }
     });
-    const posts = await BlogModel.findAll({
+    const posts = await TaskModel.findAll({
       where: {
         id: user[0].id
       },

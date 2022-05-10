@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const URI = 'http://localhost:8081/users/signup'
+const URI = 'http://localhost:8080/users/signup'
 
 const CompCreateUser = () => {
 
@@ -14,10 +14,10 @@ const CompCreateUser = () => {
     const navigate = useNavigate();
 
     const signup = async (e) => {
+        console.log(username, password, confPassword)
         e.preventDefault();
         try {
-            await axios
-                        .post(URI, {username, password, confPassword});
+            await axios.post(URI, {username, password, confPassword});
             navigate("/");
         } catch (error) {
             if (error.response) {

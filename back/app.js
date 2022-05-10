@@ -2,7 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
 import db from './database/db.js';
-import blogRoutes from './routes/blog.routes.js';
+import tasksRoutes from './routes/task.routes.js';
 import userRoutes from './routes/user.routes.js';
 import passport from 'passport';
 import UserModel from './models/user.model.js';
@@ -49,7 +49,7 @@ app.use(cookieParser())
 
 
 /*ROUTES*/
-app.use('/blogs', blogRoutes);
+app.use('/tasks', tasksRoutes);
 app.use('/users', userRoutes);
 
 

@@ -3,7 +3,7 @@ import { DataTypes } from 'sequelize';
 import dotenv from 'dotenv';
 dotenv.config();
 
-const UserModel = db.define(process.env.DB_TABLE_USERS, {
+const UserModel = db.define('users', {
     username: {
         type: DataTypes.STRING,
         allowNull: false,

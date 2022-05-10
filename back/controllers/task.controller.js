@@ -1,30 +1,30 @@
-import BlogModel from '../models/blog.model.js';
+import TaskModel from '../models/task.model.js';
 
-export const getAllBlogs = async (req, res)=>{
+export const getAllTasks = async (req, res)=>{
     try{
-        const blogs = await BlogModel.findAll();
-        res.json(blogs)
+        const tasks = await TaskModel.findAll();
+        res.json(tasks)
     }catch(err){
         res.json({message: err.message});
     }
 };
 
-export const getBlog = async (req, res)=>{
+export const getTask = async (req, res)=>{
     try{
-        const blog = await BlogModel.findAll({
+        const task = await TaskModel.findAll({
             where: {
                 id: req.params.id
             }
         });
-        res.json(blog[0])
+        res.json(task[0])
     }catch(err){
         res.json({message: err.message});
     }
 };
 
-export const createBlog = async (req, res)=>{
+export const createTask = async (req, res)=>{
     try{
-        const blog = await BlogModel.create(req.body);
+        const task = await TaskModel.create(req.body);
         res.json({
             'message': `Registro creado correctamente, title= ${req.body.title}`
         })
@@ -33,9 +33,9 @@ export const createBlog = async (req, res)=>{
     }
 }
 
-export const updateBlog = async (req, res)=>{
+export const updateTask = async (req, res)=>{
     try{
-        await BlogModel.update(req.body, {
+        await TaskModel.update(req.body, {
             where: {
                 id: req.params.id
             }
@@ -48,9 +48,9 @@ export const updateBlog = async (req, res)=>{
     }
 };
 
-export const deleteBlog = async (req, res)=>{
+export const deleteTask = async (req, res)=>{
     try{
-        await BlogModel.destroy({
+        await TaskModel.destroy({
             where: {
                 id: req.params.id
             }

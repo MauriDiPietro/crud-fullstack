@@ -1,5 +1,5 @@
-import BlogModel from '../models/blog.model.js';
+import TaskModel from '../models/task.model.js';
 import UserModel from '../models/user.model.js';
 
-UserModel.hasMany(BlogModel, { as: 'posts', foreignKey: 'userId' });
-BlogModel.belongsTo(UserModel, { as: 'user' });
+UserModel.hasMany(TaskModel, { as: 'tasks', foreignKey: 'userId' });
+TaskModel.belongsTo(UserModel, { as: 'user' });

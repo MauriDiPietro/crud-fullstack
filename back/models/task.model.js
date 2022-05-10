@@ -3,7 +3,7 @@ import { DataTypes } from 'sequelize';
 import dotenv from 'dotenv';
 dotenv.config();
 
-const BlogModel = db.define(process.env.DB_TABLE_BLOGS, {
+const TaskModel = db.define('tasks', {
     title: {
         type: DataTypes.STRING
     },
@@ -12,4 +12,4 @@ const BlogModel = db.define(process.env.DB_TABLE_BLOGS, {
     }
 });
 
-export default BlogModel;
+export default TaskModel;
