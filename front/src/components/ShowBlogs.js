@@ -7,7 +7,7 @@ import {AiFillEdit, AiFillDelete} from 'react-icons/ai'
 //dotenv.config();
 
 //const URI = process.env.URI
-const URI = 'http://localhost:8081/blogs/'
+const URI = 'http://localhost:8080/blogs/'
 
 const CompShowBlogs = () =>{
     

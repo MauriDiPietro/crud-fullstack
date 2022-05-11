@@ -1,20 +1,22 @@
 import axios from 'axios';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
-const URI = 'http://localhost:8081/blogs/'
+const URI = 'http://localhost:8080/tasks'
 
-const CompCreateBlog = () => {
+const CompCreateBlog = ({user}) => {
+    const {id} = useParams()
 
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
+    const [userId] = useState(user.userId)
     const navigate = useNavigate();
 
     const store = async (e) => {
         e.preventDefault();
-        await axios
-                    .post(URI, {title, content});
-        navigate('/');
+        await axios.post(URI, {title, content, userId});
+                    console.log(title, content, userId)
+        navigate(`/home/${id}`);
     }
 
     return (

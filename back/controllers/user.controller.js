@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import dotenv from 'dotenv';
 import TaskModel from "../models/task.model.js";
+import {getAllTasksByUser} from '../controllers/task.controller.js'
 dotenv.config();
 
 export const createUser = async (req, res)=>{
@@ -152,12 +153,22 @@ export const refreshToken = async(req, res)=>{
         refresh_token: refreshToken
       }
     });
+    //////////////////////////////////////////
     const posts = await TaskModel.findAll({
       where: {
-        id: user[0].id
+        userId: user[0].id      
       },
       attributes: ['title', 'content']
+
+  //   where: {
+  //     userId: id      //userId = req.params.id
+  // },
+  // include:[{
+  //     model: UserModel,
+  //     as: 'user'          //alias de la asociacion
+  // }]
     })
+    // const posts = await getAllTasksByUser()
     if(!user[0]) return res.sendStatus(401);
     jwt.verify(refreshToken, process.env.ACCESS_TOKEN, (err, decoded)=>{
       if(err) return res.json(err);

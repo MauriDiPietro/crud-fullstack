@@ -3,9 +3,10 @@ import { useState, useEffect } from 'react';
 import jwt_decode from 'jwt-decode';
 // import jwt from 'jsonwebtoken';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
+import CompCreateBlog from './CreateBlog.js'
 
 
-const URI = 'http://localhost:8081/users/token'
+const URI = 'http://localhost:8080/users/token'
 
 const CompHome = () => {
     const {id} = useParams()
@@ -48,7 +49,7 @@ const CompHome = () => {
 
     const getUser = async ()=>{
         refreshToken()
-        const res = await axios.get(`http://localhost:8081/users/home/${id}`)
+        const res = await axios.get(`http://localhost:8080/tasks/user/${id}`)
                                 console.log(res)
         // setUser(res.data)
     }
@@ -62,8 +63,16 @@ const CompHome = () => {
                    user ? <h3>Bienvenido {user.username}!</h3> : null
                } 
                {
-                   user.postsUser ? user.postsUser.map((p)=><p key={p.id}>{p.title}</p>) : null
+                   user.postsUser ? user.postsUser.map((p)=>
+                   <>
+                                            <ul>
+                                            <li key={p.id}>{p.title}</li>
+                                            <li>{p.content}</li>
+                                            </ul>
+                    </>
+                   ) : null
                }
+               <CompCreateBlog user={user} />
                
                 
         </div>

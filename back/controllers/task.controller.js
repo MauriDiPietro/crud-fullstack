@@ -1,4 +1,5 @@
 import TaskModel from '../models/task.model.js';
+import UserModel from '../models/user.model.js';
 
 export const getAllTasks = async (req, res)=>{
     try{
@@ -8,6 +9,27 @@ export const getAllTasks = async (req, res)=>{
         res.json({message: err.message});
     }
 };
+
+export const getAllTasksByUser = async(req, res)=>{
+    const { id } = req.params;
+    try {
+        const tasks = await TaskModel.count();
+        if(tasks !== 0){
+            const tasksByUser = await TaskModel.findAll({
+                where: {
+                    userId: id      //userId = req.params.id
+                },
+                include:[{
+                    model: UserModel,
+                    as: 'user'          //alias de la asociacion
+                }]
+            })
+            res.status(201).json(tasksByUser)
+        }
+    } catch (err) {
+        res.json({message: err.message});
+    }
+}
 
 export const getTask = async (req, res)=>{
     try{
@@ -22,16 +44,24 @@ export const getTask = async (req, res)=>{
     }
 };
 
-export const createTask = async (req, res)=>{
+export const createTask = async (req, res)=>{   //debe tomar el id del usuario
     try{
-        const task = await TaskModel.create(req.body);
+        const {title, content, userId} = req.body
+        await TaskModel.create({
+            title, 
+            content,
+            userId
+    });
         res.json({
-            'message': `Registro creado correctamente, title= ${req.body.title}`
+            title,
+            content,
+            userId
         })
     }catch(err){
         res.json({message: err.message});
     }
 }
+
 
 export const updateTask = async (req, res)=>{
     try{
