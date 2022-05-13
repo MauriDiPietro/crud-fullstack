@@ -54,7 +54,7 @@ const CompLoginUser = () => {
                             className='form-control'
                         />
                     </div>
-                    <button type='submit' className='btn btn-primary'>Login!</button>
+                    <button type='submit' className='btn btn-success'>Login!</button>
                     <Link to='/signup'>  
                         <button className='btn btn-primary'>Register</button> 
                     </Link>
