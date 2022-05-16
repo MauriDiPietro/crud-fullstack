@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import Navbar1 from './NavBar';
 
 const URI = 'http://localhost:8080/tasks'
 
@@ -9,7 +10,7 @@ const CompCreateBlog = ({user}) => {
 
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
-    const [userId] = useState(user.userId)
+    const [userId] = useState(id)
     const navigate = useNavigate();
 
     const store = async (e) => {
@@ -22,6 +23,7 @@ const CompCreateBlog = ({user}) => {
     return (
 
         <div>
+            <Navbar1 />
                 <h3>Create POST</h3>
                 <form onSubmit={store}>
                     <div className='mb-3'>

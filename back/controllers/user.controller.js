@@ -158,7 +158,7 @@ export const refreshToken = async(req, res)=>{
       where: {
         userId: user[0].id      
       },
-      attributes: ['title', 'content']
+      attributes: ['id','title', 'content']
 
   //   where: {
   //     userId: id      //userId = req.params.id
@@ -186,20 +186,25 @@ export const refreshToken = async(req, res)=>{
 };
 
 export const logout = async (req, res)=>{
-  const refreshToken = req.cookies.refreshToken
-  if(!refreshToken) return res.sendStatus(204);
-  const user = await UserModel.findAll({
-    where: {
-      refresh_token: refreshToken
-    }
-  });
-  if(!user[0]) return res.sendStatus(204);
-  const userId = user[0].id
-  await UserModel.update({refresh_token: null}, {
-    where: {
-      id: userId
-    }
-  });
-  res.clearCookie('refreshToken');
-  return res.sendStatus(200);
+  try {
+    const refreshToken = req.cookies.refreshToken
+    if(!refreshToken) return res.sendStatus(204);
+    const user = await UserModel.findAll({
+      where: {
+        refresh_token: refreshToken
+      }
+    });
+    if(!user[0]) return res.sendStatus(204);
+    const userId = user[0].id
+    await UserModel.update({refresh_token: null}, {
+      where: {
+        id: userId
+      }
+    });
+    res.clearCookie('refreshToken');
+    return res.sendStatus(200);
+    
+  } catch (error) {
+    res.json({'message': error})
+  }
 };
