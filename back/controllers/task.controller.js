@@ -46,15 +46,17 @@ export const getTask = async (req, res)=>{
 
 export const createTask = async (req, res)=>{   //debe tomar el id del usuario
     try{
-        const {title, content, userId} = req.body
+        const {title, content, date, userId} = req.body
         await TaskModel.create({
             title, 
             content,
+            date,
             userId
     });
         res.json({
             title,
             content,
+            date,
             userId
         })
     }catch(err){

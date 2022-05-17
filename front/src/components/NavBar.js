@@ -2,7 +2,7 @@ import {Navbar, Nav, Container} from 'react-bootstrap';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 
-const Navbar1 = () => {
+const Navbar1 = ({user}) => {
   const navigate = useNavigate();
   
   const URI = 'http://localhost:8080/users/logout'  
@@ -22,7 +22,7 @@ const Navbar1 = () => {
 <>
   <Navbar bg="dark" variant="dark">
     <Container>
-      <Link to='/home'>
+      <Link to={`/home/${user.userId}`}>
     <Navbar.Brand >App Tasks</Navbar.Brand>
     </Link>
     <Nav className="me-auto">

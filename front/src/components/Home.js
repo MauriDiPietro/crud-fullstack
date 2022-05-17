@@ -26,6 +26,7 @@ const CompHome = () => {
     }
 
     const deleteTask = async (idTask)=>{
+        alert('are you sure you want to delete?')
         await axios
                     .delete(`http://localhost:8080/tasks/${idTask}`)
         getUser()
@@ -45,7 +46,7 @@ const CompHome = () => {
 
     return (
         <div>
-            <Navbar1/>
+            <Navbar1 user={user}/>
 <br></br>
 <br></br>
 <br></br>
@@ -77,6 +78,7 @@ const CompHome = () => {
                             
                             <th scope="col">Title</th>
                             <th scope="col">Content</th>
+                            <th scope="col">Date YYYY-MM-DD</th>
                             <th scope="col">Actions</th>
                             </tr>
                         </thead>
@@ -86,6 +88,7 @@ const CompHome = () => {
                                    <tr key={p.id}>
                                    <td>{p.title}</td>
                                    <td>{p.content}</td>
+                                   <td>{p.date}</td>
                                    <td>
                                        <Link to={`/edit/${p.id}`} className='btn btn-info'><AiFillEdit /></Link>
                                        <button onClick={()=>deleteTask(p.id)} className='btn btn-danger' ><AiFillDelete /></button>

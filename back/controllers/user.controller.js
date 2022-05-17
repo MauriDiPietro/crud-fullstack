@@ -78,7 +78,7 @@ export const getUser = async(req, res)=>{
             include: [{
               model: TaskModel,
               as: 'tasks',
-              attributes: ['title', 'content']
+              attributes: ['title', 'content', 'date']
             }],
             attributes: ['id', 'username']
           })
@@ -158,7 +158,7 @@ export const refreshToken = async(req, res)=>{
       where: {
         userId: user[0].id      
       },
-      attributes: ['id','title', 'content']
+      attributes: ['id','title', 'content', 'date']
 
   //   where: {
   //     userId: id      //userId = req.params.id

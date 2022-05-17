@@ -20,7 +20,7 @@ const CompLoginUser = () => {
                 console.log(data)
                 if(data.data.accessToken){
                     localStorage.setItem('token', data.data.accessToken)
-                    alert('Login OK!')
+                    // alert('Login OK!')
                     navigate(`/home/${data.data.userId}`);
                 } else {
                     alert('Please check your username and password')
@@ -35,7 +35,7 @@ const CompLoginUser = () => {
     return (
 
         <div>
-                <h3>LOGIN</h3>
+                <h3>Login APP-TASKS</h3>
                 <form onSubmit={login}>
                      <p>{msg}</p>
                     <div className='mb-3'>
@@ -55,6 +55,7 @@ const CompLoginUser = () => {
                         />
                     </div>
                     <button type='submit' className='btn btn-success'>Login!</button>
+                    <h3>Is not registered?</h3>
                     <Link to='/signup'>  
                         <button className='btn btn-primary'>Register</button> 
                     </Link>
